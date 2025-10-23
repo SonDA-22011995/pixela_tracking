@@ -1,0 +1,47 @@
+{
+  "pixela_api": {
+    "is_create_account": 0,
+    "create_user": {
+      "method": "POST",
+      "endpoint": "https://pixe.la/v1/users",
+      "request_body": {
+        "token": "",
+        "username": "",
+        "agreeTermsOfService": "",
+        "notMinor": "",
+        "thanksCode": ""
+      }
+    },
+    "create_graph": {
+      "method": "POST",
+      "endpoint": "https://pixe.la/v1/<username>/graphs",
+      "request_header": {
+        "X-USER-TOKEN": ""
+      },
+      "request_body": {
+        "id": "",
+        "name": "",
+        "unit": "",
+        "type": "",
+        "color": "",
+        "timezone": "",
+        "startOnMonday": "",
+        "selfSufficient": "",
+        "isSecret": "",
+        "publishOptionalData": ""
+      }
+    },
+     "post_pixel": {
+      "method": "POST",
+      "endpoint": "https://pixe.la/v1/users/<username>/graphs/<graphID>",
+      "request_header": {
+        "X-USER-TOKEN": ""
+      },
+      "request_body": {
+        "date": "",
+        "quantity": "",
+        "optionalData": ""
+      }
+    }
+  }
+}
