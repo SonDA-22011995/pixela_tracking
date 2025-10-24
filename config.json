@@ -1,6 +1,5 @@
 {
   "pixela_api": {
-    "is_create_account": 0,
     "create_user": {
       "method": "POST",
       "endpoint": "https://pixe.la/v1/users",
