@@ -32,3 +32,7 @@ def insert_user(user_name, x_user_token):
 
 def insert_graph(user_name, graph_id):
     graph_data.loc[len(graph_data)] = [user_name, graph_id]
+
+def get_user_token(user_name:str)->str:
+    data = user_data.loc[user_data["user_name"] == user_name, "x_user_token"]
+    return data.iloc[0]

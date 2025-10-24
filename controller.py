@@ -85,6 +85,7 @@ def login():
     if not selection_user_data.empty:
         user = User(user_name, token)
         print(f"Welcome {getattr(user, "user_name")} comeback")
+        choose_graph_for_task(user.get_graph_id(model.graph_data))
     else:
         print(f"Username or token isn't correct")
 
@@ -136,6 +137,43 @@ def create_graph():
     except KeyError as e:
         print(response["error"])
 
+
+def choose_graph_for_task(user_graph: list[dict])->None:
+    global graph
+    if not len(user_graph):
+        print("Please create a graph before proceeding.")
+        return
+    description = ""
+    choices = []
+
+    for graph in user_graph:
+        description += graph.get("graph_id") + "\n"
+        choices.append(graph.get("graph_id"))
+
+    description = "Please choose one graph for task:" + "\n" + description
+    user_graph_id = pyip.inputChoice(prompt=description, choices=choices)
+    graph = Graph(getattr(user,"user_name"), user_graph_id)
+    print(f"Welcome {getattr(user, "user_name")} work in {getattr(graph, "graph_id")}")
+
+def post_a_pixel()->None:
+
+    if graph is None:
+        print(f"Please sign in first")
+        return
+
+    date = pyip.inputDate(
+        prompt="The date on which the quantity is to be recorded:",
+        formats=["%d/%m/%y"]
+    )
+
+    quantity = pyip.inputFloat(
+        prompt="Specify the quantity to be registered on the specified date:",
+    )
+
+    graph.post_a_pixel(date, quantity)
+
+
+
 while is_run:
     description = ""
     choice = []
@@ -169,4 +207,6 @@ Please choose one option below:
             login()
         case "3":
             create_graph()
+        case "4":
+            post_a_pixel()
 
