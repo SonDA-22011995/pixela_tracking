@@ -48,7 +48,8 @@ def call_api(method, url, headers=None, params=None, data=None, json=None, timeo
             return {"message": "Response is not valid JSON", "raw_text": response.text}
 
     except HTTPError as e:
-        return {"error": f"HTTP error occurred: {e}", "status_code": response.status_code}
+        res = e.response
+        return {"error": f"HTTP error occurred: {res.json()["message"]}", "status_code": response.status_code}
     except ConnectionError:
         return {"error": "Connection error occurred"}
     except Timeout:

@@ -13,7 +13,7 @@
     },
     "create_graph": {
       "method": "POST",
-      "endpoint": "https://pixe.la/v1/<username>/graphs",
+      "endpoint": "https://pixe.la/v1/users/<username>/graphs",
       "request_header": {
         "X-USER-TOKEN": ""
       },
@@ -23,11 +23,7 @@
         "unit": "",
         "type": "",
         "color": "",
-        "timezone": "",
-        "startOnMonday": "",
-        "selfSufficient": "",
-        "isSecret": "",
-        "publishOptionalData": ""
+        "timezone": ""
       }
     },
      "post_pixel": {

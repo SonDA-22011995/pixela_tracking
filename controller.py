@@ -2,10 +2,12 @@ import model
 from utils import call_api
 import pyinputplus as pyip
 from user import User
+from graph import Graph
 
 
 is_run = True
 user = None
+graph = None
 model.load_user_data(file_path="./data/user.csv")
 model.load_grap_data(file_path="./data/graph.csv")
 
@@ -87,10 +89,52 @@ def login():
         print(f"Username or token isn't correct")
 
 def create_graph():
+    global graph
     if user is None:
         print(f"Please sign in first")
         return
+    graph_id = pyip.inputStr(prompt="ID for identifying the pixelation graph:")
+    graph_name = pyip.inputStr(prompt="The name of the pixelation graph:")
+    graph_unit = pyip.inputStr(prompt="A unit of the quantity recorded in the pixelation graph:")
+    graph_type = pyip.inputChoice(
+        prompt="It is the type of quantity to be handled in the graph:",
+        choices=["float","int"]
+    )
+    graph_color = pyip.inputChoice(
+        prompt="The display color of the pixel in the pixelation graph:",
+        choices=["shibafu","momiji","sora","ichou","ajisai","kuro"]
+    )
 
+    request_header = model.config["pixela_api"]["create_graph"]["request_header"]
+    request_header["X-USER-TOKEN"] = getattr(user, "x_user_token")
+
+    request_body = model.config["pixela_api"]["create_graph"]["request_body"]
+    request_body["id"] = graph_id
+    request_body["name"] = graph_name
+    request_body["unit"] = graph_unit
+    request_body["type"] = graph_type
+    request_body["color"] = graph_color
+
+    end_point = model.config["pixela_api"]["create_graph"]["endpoint"]
+    end_point = end_point.replace("<username>",getattr(user, "user_name"))
+
+    response = call_api(
+        method=model.config["pixela_api"]["create_graph"]["method"],
+        url=end_point,
+        json=request_body,
+        headers= request_header
+    )
+
+    try:
+        if response["isSuccess"]:
+            model.insert_graph(user_name= getattr(user, "user_name"), graph_id= graph_id)
+            graph = Graph(getattr(user, "user_name"), graph_id)
+            print(response["message"])
+            print(f"Welcome {getattr(user,"user_name")} work in {getattr(graph, "graph_id")}")
+        else:
+            print(response["message"])
+    except KeyError as e:
+        print(response["error"])
 
 while is_run:
     description = ""
