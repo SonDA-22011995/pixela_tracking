@@ -200,6 +200,8 @@ Please choose one option below:
             is_run = False
             model.save_user(file_path="./data/user.csv")
             model.save_graph_data(file_path="./data/graph.csv")
+            user = None
+            graph = None
             print("Good bye, see ya")
         case "2":
             create_new_user()
