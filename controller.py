@@ -64,13 +64,33 @@ def create_new_user():
             model.insert_user(user_name= user_name, x_user_token= token)
             user = User(user_name, token)
             print(response["message"])
+            print(f"Welcome {getattr(user,"user_name")}")
         else:
             print(response["message"])
     except KeyError as e:
         print(response["error"])
 
 def login():
-    pass
+    global user
+    user_name = pyip.inputStr(prompt="User name login:")
+    token = pyip.inputStr(prompt="Token:")
+
+    selection_user_data = model.user_data[
+        (model.user_data["user_name"] == user_name)
+            & (model.user_data["x_user_token"]== token)
+    ]
+
+    if not selection_user_data.empty:
+        user = User(user_name, token)
+        print(f"Welcome {getattr(user, "user_name")} comeback")
+    else:
+        print(f"Username or token isn't correct")
+
+def create_graph():
+    if user is None:
+        print(f"Please sign in first")
+        return
+
 
 while is_run:
     description = ""
@@ -80,11 +100,9 @@ while is_run:
 Please choose one option below:
 1. Sign in
 2. Sign up
-3. Create a graph
-4. Post a pixel
 0. Sign out
 """
-        choice = ["0","1","2","3","4"]
+        choice = ["0","1","2"]
     else:
         description = """
 Please choose one option below:
@@ -105,4 +123,6 @@ Please choose one option below:
             create_new_user()
         case "1":
             login()
+        case "3":
+            create_graph()
 
