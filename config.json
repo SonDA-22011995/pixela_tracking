@@ -1,5 +1,8 @@
 {
   "pixela_api": {
+     "request_header": {
+        "X-USER-TOKEN": ""
+      },
     "create_user": {
       "method": "POST",
       "endpoint": "https://pixe.la/v1/users",
@@ -14,9 +17,7 @@
     "create_graph": {
       "method": "POST",
       "endpoint": "https://pixe.la/v1/users/<username>/graphs",
-      "request_header": {
-        "X-USER-TOKEN": ""
-      },
+
       "request_body": {
         "id": "",
         "name": "",
@@ -26,14 +27,22 @@
         "timezone": ""
       }
     },
-     "post_pixel": {
+    "post_pixel": {
       "method": "POST",
       "endpoint": "https://pixe.la/v1/users/<username>/graphs/<graphID>",
+      "request_body": {
+        "date": "",
+        "quantity": "",
+        "optionalData": ""
+      }
+    },
+    "update_pixel": {
+      "method": "PUT",
+      "endpoint": "https://pixe.la/v1/users/<username>/graphs/<graphID>/<yyyyMMdd>",
       "request_header": {
         "X-USER-TOKEN": ""
       },
       "request_body": {
-        "date": "",
         "quantity": "",
         "optionalData": ""
       }

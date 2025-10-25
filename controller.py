@@ -172,6 +172,21 @@ def post_a_pixel()->None:
 
     graph.post_a_pixel(date, quantity)
 
+def update_a_pixel():
+    if graph is None:
+        print(f"Please sign in first")
+        return
+
+    date = pyip.inputDate(
+        prompt="The date on which the quantity is to be updated:",
+        formats=["%d/%m/%y"]
+    )
+
+    quantity = pyip.inputFloat(
+        prompt="Specify the quantity to be updated on the specified date:",
+    )
+
+    graph.update_a_pixel(date, quantity)
 
 
 while is_run:
@@ -190,9 +205,10 @@ Please choose one option below:
 Please choose one option below:
 3. Create a graph
 4. Post a pixel
+5. Update a pixel
 0. Sign out
         """
-        choice = ["0", "3", "4"]
+        choice = ["0", "3", "4","5"]
 
     user_choice = pyip.inputChoice(prompt=description,choices = choice)
     match user_choice:
@@ -211,4 +227,6 @@ Please choose one option below:
             create_graph()
         case "4":
             post_a_pixel()
+        case "5":
+            update_a_pixel()
 
