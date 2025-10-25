@@ -3,11 +3,12 @@ from utils import call_api
 import pyinputplus as pyip
 from user import User
 from graph import Graph
+from typing import Optional
 
 
 is_run = True
-user = None
-graph = None
+user: Optional[User] = None
+graph: Optional[Graph] = None
 model.load_user_data(file_path="./data/user.csv")
 model.load_grap_data(file_path="./data/graph.csv")
 
@@ -85,7 +86,7 @@ def login():
     if not selection_user_data.empty:
         user = User(user_name, token)
         print(f"Welcome {getattr(user, "user_name")} comeback")
-        choose_graph_for_task(user.get_graph_id(model.graph_data))
+        choose_graph_for_task(getattr(user, "graphs"))
     else:
         print(f"Username or token isn't correct")
 
@@ -106,53 +107,26 @@ def create_graph():
         choices=["shibafu","momiji","sora","ichou","ajisai","kuro"]
     )
 
-    request_header = model.config["pixela_api"]["create_graph"]["request_header"]
-    request_header["X-USER-TOKEN"] = getattr(user, "x_user_token")
+    user.create_a_graph(graph_id, graph_name, graph_unit, graph_type, graph_color)
+    model.insert_graph(getattr(user,"user_name"), getattr(user.current_graph,"graph_id"))
 
-    request_body = model.config["pixela_api"]["create_graph"]["request_body"]
-    request_body["id"] = graph_id
-    request_body["name"] = graph_name
-    request_body["unit"] = graph_unit
-    request_body["type"] = graph_type
-    request_body["color"] = graph_color
-
-    end_point = model.config["pixela_api"]["create_graph"]["endpoint"]
-    end_point = end_point.replace("<username>",getattr(user, "user_name"))
-
-    response = call_api(
-        method=model.config["pixela_api"]["create_graph"]["method"],
-        url=end_point,
-        json=request_body,
-        headers= request_header
-    )
-
-    try:
-        if response["isSuccess"]:
-            model.insert_graph(user_name= getattr(user, "user_name"), graph_id= graph_id)
-            graph = Graph(getattr(user, "user_name"), graph_id)
-            print(response["message"])
-            print(f"Welcome {getattr(user,"user_name")} work in {getattr(graph, "graph_id")}")
-        else:
-            print(response["message"])
-    except KeyError as e:
-        print(response["error"])
-
-
-def choose_graph_for_task(user_graph: list[dict])->None:
+def choose_graph_for_task(user_graph: list[Graph])->None:
     global graph
+
     if not len(user_graph):
         print("Please create a graph before proceeding.")
         return
     description = ""
     choices = []
 
-    for graph in user_graph:
-        description += graph.get("graph_id") + "\n"
-        choices.append(graph.get("graph_id"))
+    for index, graph in enumerate(user_graph):
+        description += f"Index {index}: {getattr(graph,"graph_id")} \n"
+        choices.append(str(index))
 
-    description = "Please choose one graph for task:" + "\n" + description
+    description = "Please enter the index to choose a graph for the task:" + "\n" + description
     user_graph_id = pyip.inputChoice(prompt=description, choices=choices)
-    graph = Graph(getattr(user,"user_name"), user_graph_id)
+    graph = user_graph[int(user_graph_id)]
+    user.current_graph = graph
     print(f"Welcome {getattr(user, "user_name")} work in {getattr(graph, "graph_id")}")
 
 def post_a_pixel()->None:

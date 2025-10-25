@@ -42,6 +42,7 @@ class Graph:
         try:
             if response["isSuccess"]:
                 print(response["message"])
+                print(f"Link: https://pixe.la/v1/users/{self.user_name}/graphs/{self.graph_id}.html")
             else:
                 print(response["message"])
         except KeyError as e:
@@ -74,6 +75,7 @@ class Graph:
         try:
             if response["isSuccess"]:
                 print(response["message"])
+                print(f"Link: https://pixe.la/v1/users/{self.user_name}/graphs/{self.graph_id}.html")
             else:
                 print(response["message"])
         except KeyError as e:
