@@ -162,6 +162,18 @@ def update_a_pixel():
 
     graph.update_a_pixel(date, quantity)
 
+def delete_a_pixel():
+    if graph is None:
+        print(f"Please sign in first")
+        return
+
+    date = pyip.inputDate(
+        prompt="The date on which the quantity is to be updated:",
+        formats=["%d/%m/%y"]
+    )
+
+    graph.delete_a_pixel(date)
+
 
 while is_run:
     description = ""
@@ -181,9 +193,10 @@ Please choose one option below:
 4. Post a pixel
 5. Update a pixel
 6. Switch to another graph
+7. Delete a pixel
 0. Sign out
         """
-        choice = ["0", "3", "4","5","6"]
+        choice = ["0", "3", "4","5","6","7"]
 
     user_choice = pyip.inputChoice(prompt=description,choices = choice)
     match user_choice:
@@ -206,4 +219,6 @@ Please choose one option below:
             update_a_pixel()
         case "6":
             choose_graph_for_task(getattr(user,"graphs"))
+        case "7":
+            delete_a_pixel()
 

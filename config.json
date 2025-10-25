@@ -46,6 +46,13 @@
         "quantity": "",
         "optionalData": ""
       }
+    },
+     "delete_pixel": {
+      "method": "DELETE",
+      "endpoint": "https://pixe.la/v1/users/<username>/graphs/<graphID>/<yyyyMMdd>",
+      "request_header": {
+        "X-USER-TOKEN": ""
+      }
     }
   }
 }
