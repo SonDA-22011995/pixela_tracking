@@ -180,9 +180,10 @@ Please choose one option below:
 3. Create a graph
 4. Post a pixel
 5. Update a pixel
+6. Switch to another graph
 0. Sign out
         """
-        choice = ["0", "3", "4","5"]
+        choice = ["0", "3", "4","5","6"]
 
     user_choice = pyip.inputChoice(prompt=description,choices = choice)
     match user_choice:
@@ -203,4 +204,6 @@ Please choose one option below:
             post_a_pixel()
         case "5":
             update_a_pixel()
+        case "6":
+            choose_graph_for_task(getattr(user,"graphs"))
 
